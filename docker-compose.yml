@@ -1,0 +1,34 @@
+services:
+  coordinator:
+    image: citusdata/citus:12.1
+    container_name: citus-coordinator
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=amina
+      - POSTGRES_PASSWORD=12345
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - coordinator_data:/var/lib/postgresql/data
+    networks:
+      - citus-network
+
+  worker1:
+    image: citusdata/citus:12.1
+    container_name: citus-worker1
+    environment:
+      - POSTGRES_USER=amina
+      - POSTGRES_PASSWORD=12345
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - worker1_data:/var/lib/postgresql/data
+    networks:
+      - citus-network
+
+volumes:
+  coordinator_data:
+  worker1_data:
+
+networks:
+  citus-network:
+    driver: bridge
